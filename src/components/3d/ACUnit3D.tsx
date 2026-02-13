@@ -163,7 +163,7 @@ function ACModel() {
 
 export default function ACUnit3D() {
   return (
-    <div className="w-full h-full min-h-[400px]">
+    <div className="w-full h-full min-h-[250px] md:min-h-[400px]">
       <Canvas shadows camera={{ position: [0, 0, 4.5], fov: 45 }}>
         <Suspense fallback={null}>
             <ambientLight intensity={0.5} />

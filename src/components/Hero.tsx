@@ -115,7 +115,7 @@ export default function Hero() {
 
         {/* Central Visual 3D Container */}
         {/* Changed: Fixed height as requested for the 3D model container */}
-        <div className="relative w-full max-w-5xl h-[500px] mb-8 -mt-4 z-10 touch-action-pan-y">
+        <div className="relative w-full max-w-5xl h-[280px] md:h-[500px] mb-8 -mt-4 z-10 touch-action-pan-y">
             
             {/* 3D Unit */}
             <div ref={visualContainerRef} className="w-full h-full drop-shadow-2xl">
