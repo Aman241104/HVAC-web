@@ -12,7 +12,6 @@ import {
   Text,
   Environment
 } from '@react-three/drei'
-import * as THREE from 'three'
 
 // Reusable Hotspot Component
 function Hotspot({ 
@@ -72,7 +71,6 @@ function ACModel() {
           rotation={[0, 0, 0]} 
           polar={[-Math.PI / 6, Math.PI / 6]} 
           azimuth={[-Math.PI / 4, Math.PI / 4]} 
-          config={{ mass: 1, tension: 170, friction: 26 }} 
         >
           <group position={[0, 0.5, 0]}>
             
