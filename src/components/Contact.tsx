@@ -1,228 +1,246 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Phone, Mail, MapPin, Send, ArrowRight } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
+import { Phone, Mail, MapPin, ArrowRight, CheckCircle2, Loader2, RotateCcw, Send } from 'lucide-react'
 
 export default function Contact() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLDivElement>(null)
-  const infoRef = useRef<HTMLDivElement>(null)
-  const radarRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement>(null)
+  
+  // Form State
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState({
+      name: '',
+      phone: '',
+      serviceType: 'Residential VRF',
+      message: ''
+  })
 
   useGSAP(() => {
-    // Form Panel Slide In (Left)
-    gsap.from(formRef.current, {
-      x: -30,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 75%',
-      }
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+        }
     })
 
-    // Info Panel Slide In (Right)
-    gsap.from(infoRef.current, {
-      x: 30,
-      opacity: 0,
-      duration: 1,
-      delay: 0.2, 
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 75%',
-      }
+    tl.from('.contact-title', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
     })
-
-    // Radar Animation
-    if (radarRef.current) {
-        const circles = radarRef.current.querySelectorAll('.radar-circle')
-        gsap.to(circles, {
-            scale: 2,
-            opacity: 0,
-            duration: 3,
-            stagger: 1,
-            repeat: -1,
-            ease: 'power1.out'
-        })
-    }
+    .from('.contact-info', {
+        x: -30,
+        opacity: 0,
+        duration: 0.8,
+    }, '-=0.6')
+    .from('.contact-form', {
+        x: 30,
+        opacity: 0,
+        duration: 0.8,
+    }, '-=0.6')
 
   }, { scope: containerRef })
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setIsSubmitting(true)
+
+        // Simulate a brief processing delay for UX
+        await new Promise(resolve => setTimeout(resolve, 800))
+
+        // Format WhatsApp Message
+        const text = `*New Project Inquiry - VAER HVAC*%0A%0A` +
+                     `*Name:* ${formData.name}%0A` +
+                     `*Phone:* ${formData.phone}%0A` +
+                     `*Requirement:* ${formData.serviceType}%0A` +
+                     `*Details:* ${formData.message || 'N/A'}`
+
+        // Redirect to WhatsApp
+        window.open(`https://wa.me/919824653242?text=${text}`, '_blank')
+        
+        setIsSubmitting(false)
+    }
+
   return (
-    <section id="contact" ref={containerRef} className="py-24 bg-slate-50 relative overflow-hidden">
-      
-       {/* Engineering Grid Background */}
-       <div className="absolute inset-0 pointer-events-none opacity-30"
-           style={{
-             backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
-             backgroundSize: '40px 40px',
-             maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-             WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
-           }}
-      />
+    <section id="contact" ref={containerRef} className="py-24 bg-white relative overflow-hidden">
+        {/* Engineering Grid Background */}
+        <div className="absolute inset-0 pointer-events-none opacity-40"
+            style={{
+                backgroundImage: 'linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)',
+                backgroundSize: '40px 40px',
+                maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+            }}
+        />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-16 shadow-2xl rounded-3xl overflow-hidden tracking-tight">
-          
-          {/* Left Side: The Ask (Form) */}
-          <div ref={formRef} className="bg-white p-8 md:p-12 lg:p-16 relative z-10">
-            <div className="mb-8">
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
-                    Service Command Center
-                </span>
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                Ready to Upgrade Your Comfort?
-                </h2>
-                <p className="text-slate-600">
-                Schedule a free site inspection with our engineering team today.
-                </p>
+        <div className="contact-title text-center mb-16">
+             <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
+                Get In Touch
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+                Ready to Upgrade Your <br/>
+                <span className="text-blue-600">Climate Control?</span>
+            </h2>
+            <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+                Schedule a free site inspection with our senior engineers. No sales reps, just technical experts.
+            </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+            
+            {/* Contact Info (Left) */}
+            <div className="contact-info space-y-8">
+                <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm relative">
+                     {/* Decor Corner */}
+                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-50 to-transparent rounded-tr-2xl"></div>
+
+                    <h3 className="text-xl font-bold text-slate-900 mb-6 relative z-10">Contact Information</h3>
+                    
+                    <div className="space-y-6 relative z-10">
+                        <div className="flex items-start gap-4 group">
+                            <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                <Phone className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p className="text-sm text-slate-500 mb-1">Phone</p>
+                                <a href="tel:+919824653242" className="text-lg font-semibold text-slate-900 hover:text-blue-600 transition-colors">
+                                    +91 982 465 3242
+                                </a>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-4 group">
+                             <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                <Mail className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p className="text-sm text-slate-500 mb-1">Email</p>
+                                <a href="mailto:engineering@vaer.com" className="text-lg font-semibold text-slate-900 hover:text-blue-600 transition-colors">
+                                    engineering@vaer.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-4 group">
+                             <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                <MapPin className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p className="text-sm text-slate-500 mb-1">Office</p>
+                                <p className="text-lg font-semibold text-slate-900">
+                                    102, Tech Park, Andheri East,<br/> Mumbai, India
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Trust Badge */}
+                <div className="flex items-center gap-4 p-6 bg-emerald-50 rounded-xl border border-emerald-100">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                    <div>
+                        <p className="font-bold text-emerald-800">Certified Engineers</p>
+                        <p className="text-sm text-emerald-600/80">Daikin & Mitsubishi Authorized Partners</p>
+                    </div>
+                </div>
             </div>
 
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-500">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    className="w-full px-4 py-3 bg-slate-50 border-0 rounded-md ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 focus:bg-white outline-none transition-all placeholder:text-slate-400"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-slate-500">Phone Number</label>
-                  <input 
-                    type="tel" 
-                    id="phone" 
-                    className="w-full px-4 py-3 bg-slate-50 border-0 rounded-md ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 focus:bg-white outline-none transition-all placeholder:text-slate-400"
-                    placeholder="+91 98765 43210"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="service" className="text-xs font-bold uppercase tracking-wider text-slate-500">Service Type</label>
-                <select 
-                  id="service" 
-                  className="w-full px-4 py-3 bg-slate-50 border-0 rounded-md ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 focus:bg-white outline-none transition-all appearance-none text-slate-700"
-                >
-                  <option value="">Select a Service...</option>
-                  <option value="installation">New Installation (VRF/Split)</option>
-                  <option value="amc">Annual Maintenance (AMC)</option>
-                  <option value="repair">Repair & Service</option>
-                  <option value="design">HVAC Design & Consultation</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-xs font-bold uppercase tracking-wider text-slate-500">Message</label>
-                <textarea 
-                  id="message" 
-                  rows={4}
-                  className="w-full px-4 py-3 bg-slate-50 border-0 rounded-md ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-400"
-                  placeholder="Tell us about your requirements..."
-                ></textarea>
-              </div>
-
-              <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-blue-900/20 flex items-center justify-center gap-2 group">
-                <Send className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-                Book Site Visit
-                <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-              </button>
-            </form>
-          </div>
-
-          {/* Right Side: The Trust (Info) */}
-          <div ref={infoRef} className="bg-slate-950 p-8 md:p-12 lg:p-16 text-white flex flex-col justify-between relative overflow-hidden">
-             
-             {/* Dynamic Background */}
-             <div className="absolute inset-0 opacity-20" 
-                  style={{ 
-                      backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px)', 
-                      backgroundSize: '30px 30px' 
-                  }}>
-             </div>
-             
-             <div className="relative z-10">
-                <h3 className="text-xl font-bold mb-8 border-b border-slate-800 pb-4 inline-block text-slate-200">
-                  Contact Information
-                </h3>
+            {/* Contact Form (Right) */}
+            <div className="contact-form bg-white rounded-2xl p-8 shadow-2xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden min-h-[500px] flex flex-col justify-center">
                 
-                <div className="space-y-8">
-                  <div className="flex items-start gap-5 group">
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-500 shrink-0 group-hover:border-blue-500/50 group-hover:text-blue-400 transition-colors">
-                      <Phone className="w-5 h-5" />
+                <form onSubmit={handleSubmit} className="space-y-6 transition-opacity duration-300 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label htmlFor="name" className="text-sm font-bold text-slate-700">Name</label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                required
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-slate-400 text-slate-900"
+                                placeholder="John Doe"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="phone" className="text-sm font-bold text-slate-700">Phone</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                required
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-slate-400 text-slate-900"
+                                placeholder="+91 98765 43210"
+                            />
+                        </div>
                     </div>
-                    <div>
-                      <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Call Us (24/7)</p>
-                      <a href="tel:+916353070793" className="text-xl font-mono font-semibold hover:text-blue-400 transition-colors">
-                        +91 6353070793
-                      </a>
-                    </div>
-                  </div>
 
-                  <div className="flex items-start gap-5 group">
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-500 shrink-0 group-hover:border-blue-500/50 group-hover:text-blue-400 transition-colors">
-                      <Mail className="w-5 h-5" />
+                    <div className="space-y-2">
+                        <label htmlFor="serviceType" className="text-sm font-bold text-slate-700">Project Type</label>
+                        <select 
+                            id="serviceType" 
+                            value={formData.serviceType}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-700"
+                        >
+                            <option>Residential VRF</option>
+                            <option>Commercial Office</option>
+                            <option>Villa/Penthouse</option>
+                            <option>Industrial Ventilation</option>
+                        </select>
                     </div>
-                    <div>
-                      <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Email Us</p>
-                      <a href="mailto:contact@vaerhvac.com" className="text-lg font-mono font-semibold hover:text-blue-400 transition-colors">
-                        contact@vaerhvac.com
-                      </a>
-                    </div>
-                  </div>
 
-                  <div className="flex items-start gap-5 group">
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-500 shrink-0 group-hover:border-blue-500/50 group-hover:text-blue-400 transition-colors">
-                      <MapPin className="w-5 h-5" />
+                    <div className="space-y-2">
+                        <label htmlFor="message" className="text-sm font-bold text-slate-700">Message (Optional)</label>
+                        <textarea 
+                            id="message" 
+                            rows={4}
+                            value={formData.message}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-slate-400 text-slate-900 resize-none"
+                            placeholder="Tell us about your requirements..."
+                        ></textarea>
                     </div>
-                    <div>
-                      <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Headquarters</p>
-                      <p className="text-lg font-medium leading-snug text-slate-300">
-                        VAER HVAC Solutions,<br/>
-                        Navi Mumbai, Maharashtra 400705
-                      </p>
-                    </div>
-                  </div>
-                </div>
-             </div>
 
-             {/* Radar Map */}
-             <div ref={radarRef} className="mt-12 bg-slate-900/50 border border-slate-800 rounded-2xl h-56 w-full flex items-center justify-center relative overflow-hidden group">
+                    <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-600/30 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Generating Project Brief...
+                            </>
+                        ) : (
+                            <>
+                                <Send className="w-5 h-5 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                                Book via WhatsApp
+                            </>
+                        )}
+                    </button>
+                    
+                    <p className="text-center text-xs text-slate-400 mt-2">
+                        You'll be redirected to chat with our engineering team directly.
+                    </p>
+                </form>
                 
-                {/* Radar Circles */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full radar-circle opacity-0"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full radar-circle opacity-0"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full radar-circle opacity-0"></div>
-
-                <div className="text-center z-10 relative">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mx-auto mb-3 shadow-[0_0_15px_rgba(59,130,246,0.8)] animate-pulse"></div>
-                  <p className="text-slate-400 font-mono text-xs uppercase tracking-widest mb-1">Service Coverage</p>
-                  <p className="text-white font-bold text-sm">Mumbai & Navi Mumbai</p>
-                </div>
-
-                {/* Grid Overlay */}
-                <div className="absolute inset-0 opacity-10" 
-                    style={{ 
-                        backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)', 
-                        backgroundSize: '20px 20px',
-                        maskImage: 'radial-gradient(circle at center, black 30%, transparent 80%)'
-                    }}>
-                </div>
-             </div>
-
-          </div>
-
+            </div>
         </div>
+
       </div>
     </section>
   )

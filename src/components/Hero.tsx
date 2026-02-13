@@ -8,7 +8,14 @@ import { useGSAP } from '@gsap/react'
 import { ArrowRight, ArrowDown, HardHat, Leaf, ShieldCheck, Activity } from 'lucide-react'
 
 // Dynamically import the 3D component with no SSR to avoid hydration errors
-const ACUnit3D = dynamic(() => import('./3d/ACUnit3D'), { ssr: false })
+const ACUnit3D = dynamic(() => import('./3d/ACUnit3D'), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-slate-50/50 rounded-3xl animate-pulse">
+       <span className="text-slate-400 font-mono text-sm">Loading Model...</span>
+    </div>
+  )
+})
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
@@ -107,28 +114,28 @@ export default function Hero() {
         </h1>
 
         {/* Central Visual 3D Container */}
-        <div className="relative w-full max-w-3xl aspect-[16/10] md:aspect-[16/8] mb-8 -mt-8 z-10">
+        {/* Changed: Fixed height as requested for the 3D model container */}
+        <div className="relative w-full max-w-5xl h-[500px] mb-8 -mt-4 z-10 touch-action-pan-y">
             
             {/* 3D Unit */}
             <div ref={visualContainerRef} className="w-full h-full drop-shadow-2xl">
                  <ACUnit3D />
             </div>
 
-            {/* Smart Tag: "System Active" */}
+            {/* Smart Tag: "Air Quality" */}
             <div 
                 ref={smartTagRef}
-                className="absolute top-10 right-0 md:-right-12 bg-white/70 backdrop-blur-md border border-white/50 shadow-lg rounded-xl p-4 flex flex-col items-start gap-1 z-30"
+                className="absolute top-10 right-4 md:right-0 bg-white/70 backdrop-blur-md border border-white/50 shadow-lg rounded-xl p-4 flex flex-col items-start gap-1 z-30 transform md:translate-x-1/2"
             >
                 <div className="flex items-center gap-2">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                    </span>
-                    <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">System Active</span>
+                    <div className="p-1.5 bg-emerald-100 rounded-full text-emerald-600">
+                        <Leaf className="w-4 h-4" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Air Quality</span>
                 </div>
-                <div className="flex items-end gap-1">
-                    <span className="text-2xl font-bold text-blue-600 leading-none">24°C</span>
-                    <span className="text-xs text-slate-500 font-medium mb-0.5">Optimal</span>
+                <div className="flex items-end gap-1 px-1">
+                    <span className="text-xl font-bold text-emerald-600 leading-none">Excellent</span>
+                    <span className="text-xs text-slate-400 font-medium mb-0.5">AQI 12</span>
                 </div>
             </div>
         </div>

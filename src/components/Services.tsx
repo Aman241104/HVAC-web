@@ -4,136 +4,177 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Snowflake, ShieldCheck, Wrench, Wind, Smartphone, Route, ArrowRight } from 'lucide-react'
+import { Fan, ThermometerSnowflake, Wrench, Wind, ArrowRight, CornerDownRight } from 'lucide-react'
 
-// Register GSAP ScrollTrigger
-gsap.registerPlugin(ScrollTrigger)
+// Register plugins to fix animation issues
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
+// Define Color Map to prevent Tailwind purging
+const colorStyles = {
+  blue: {
+    bg: 'bg-blue-50',
+    text: 'text-blue-600',
+    hoverText: 'group-hover:text-blue-600',
+    gradientTo: 'to-blue-50',
+    iconText: 'text-blue-600'
+  },
+  emerald: {
+    bg: 'bg-emerald-50',
+    text: 'text-emerald-600',
+    hoverText: 'group-hover:text-emerald-600',
+    gradientTo: 'to-emerald-50',
+    iconText: 'text-emerald-600'
+  },
+  orange: {
+    bg: 'bg-orange-50',
+    text: 'text-orange-600',
+    hoverText: 'group-hover:text-orange-600',
+    gradientTo: 'to-orange-50',
+    iconText: 'text-orange-600'
+  },
+  cyan: {
+    bg: 'bg-cyan-50',
+    text: 'text-cyan-600',
+    hoverText: 'group-hover:text-cyan-600',
+    gradientTo: 'to-cyan-50',
+    iconText: 'text-cyan-600'
+  }
+}
 
 const services = [
   {
-    title: "HVAC Installation",
-    description: "VRF & DX systems tailored for luxury homes (4BHK+) and commercial offices.",
-    icon: Snowflake,
+    title: 'Precision VRF Installation',
+    description: 'Expert design and installation of Variable Refrigerant Flow systems for maximum efficiency in luxury homes and offices.',
+    icon: Fan,
+    features: ['Heat Load Calculation', 'Zoned Cooling', 'Concealed Ducting'],
+    color: 'blue' as keyof typeof colorStyles,
+    whatsappMessage: "I'm interested in a new VRF/HVAC installation for my space."
   },
   {
-    title: "Maintenance (AMC)",
-    description: "Comprehensive and non-comprehensive contracts. Seasonal tune-ups.",
-    icon: ShieldCheck,
+    title: 'Annual Maintenance (AMC)',
+    description: 'Proactive maintenance plans to ensure your premium systems run at peak performance year-round.',
+    icon: ThermometerSnowflake,
+    features: ['Quarterly Deep Cleaning', 'Gas Level Checks', 'Priority Support'],
+    color: 'emerald' as keyof typeof colorStyles,
+    whatsappMessage: "I would like to inquire about an Annual Maintenance Contract for my HVAC systems."
   },
   {
-    title: "Repairs & Emergency",
-    description: "Fast diagnosis and breakdown support. Minimal downtime for your comfort.",
+    title: 'Rapid Repair & Service',
+    description: 'Fast, diagnostic-led repair services for breakdowns. We fix what others can\'t.',
     icon: Wrench,
+    features: ['24/7 Emergency Support', 'Genuine Spares', 'Technical Diagnostics'],
+    color: 'orange' as keyof typeof colorStyles,
+    whatsappMessage: "EMERGENCY: I need a technician for an urgent HVAC repair."
   },
   {
-    title: "Indoor Air Quality",
-    description: "Advanced filtration and ventilation solutions for a healthier living environment.",
+    title: 'Indoor Air Quality',
+    description: 'Advanced filtration and ventilation solutions to keep your indoor air fresh, clean, and healthy.',
     icon: Wind,
-  },
-  {
-    title: "Smart Controls",
-    description: "Zone control systems and smart thermostat integration for intuitive management.",
-    icon: Smartphone,
-  },
-  {
-    title: "Ductwork Design",
-    description: "Professional layout planning, testing, and balancing (TAB) for optimal airflow.",
-    icon: Route,
-  },
+    features: ['HEPA Filtration', 'Fresh Air Units (TFA)', 'Humidity Control'],
+    color: 'cyan' as keyof typeof colorStyles,
+    whatsappMessage: "I want to improve the air quality in my office/home. Tell me more about your IAQ solutions."
+  }
 ]
 
 export default function Services() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const containerRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    const cards = cardsRef.current.filter(Boolean)
-    
-    gsap.fromTo(cards, 
-      { 
-        y: 30, 
-        opacity: 0 
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power2.out',
+    // Force clear any stuck animations
+    gsap.set('.section-header, .service-card', { clearProps: 'all' })
+
+    const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
+            trigger: containerRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
         }
-      }
+    })
+
+    tl.fromTo('.section-header', 
+        { y: 30, opacity: 0, autoAlpha: 0 },
+        { y: 0, opacity: 1, autoAlpha: 1, duration: 0.8, ease: 'power2.out' }
     )
-  }, { scope: sectionRef })
+    .fromTo('.service-card', 
+        { y: 50, opacity: 0, autoAlpha: 0 },
+        { y: 0, opacity: 1, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' },
+        '-=0.4'
+    )
+
+  }, { scope: containerRef })
 
   return (
-    <section id="services" ref={sectionRef} className="py-24 bg-slate-50 relative overflow-hidden">
-      
-      {/* Engineering Grid Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-30"
-           style={{
-             backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
-             backgroundSize: '40px 40px',
-             maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-             WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
-           }}
-      />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="services" ref={containerRef} className="py-24 bg-white relative">
+      <div className="container mx-auto px-6 relative z-10">
         
-        {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-20">
-          <span className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold tracking-widest uppercase rounded-full mb-4 border border-blue-100">
-             Technical Capabilities
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            Engineering-Grade <br/>
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              Climate Solutions
+        <div className="section-header text-center mb-20 opacity-0 invisible"> {/* Initial state controlled by GSAP */}
+            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
+                Our Expertise
             </span>
-          </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Comprehensive HVAC services designed for performance, efficiency, and longevity.
-          </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                Engineered for <span className="text-blue-600">Performance.</span>
+            </h2>
+            <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                We don't just install ACs; we engineer climate control ecosystems tailored to your architectural vision.
+            </p>
         </div>
 
-        {/* Service Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div 
-              key={index}
-              ref={el => { cardsRef.current[index] = el }}
-              className="group bg-white rounded-2xl p-8 border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-500/30 hover:-translate-y-2 flex flex-col h-full relative overflow-hidden"
-            >
-              {/* Technical Index Number */}
-              <div className="absolute -top-2 -right-2 text-8xl font-bold text-slate-50/80 select-none z-0 transition-colors group-hover:text-blue-50/50" 
-                   style={{ fontFamily: 'var(--font-heading, sans-serif)' }}>
-                {String(index + 1).padStart(2, '0')}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {services.map((service, index) => {
+                const styles = colorStyles[service.color]
+                
+                return (
+                    <div 
+                        key={index} 
+                        className="service-card group relative bg-white border border-slate-100 rounded-3xl p-8 hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500 hover:-translate-y-1 overflow-hidden opacity-0 invisible"
+                    >
+                        {/* Hover Gradient Background */}
+                        <div className={`absolute inset-0 bg-gradient-to-br from-white ${styles.gradientTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                        
+                        <div className="relative z-10">
+                            {/* Icon & Index */}
+                            <div className="flex justify-between items-start mb-8">
+                                <div className={`w-14 h-14 rounded-2xl ${styles.bg} flex items-center justify-center ${styles.iconText} group-hover:scale-110 transition-transform duration-500`}>
+                                    <service.icon className="w-7 h-7" />
+                                </div>
+                                <span className="text-4xl font-black text-slate-100 group-hover:text-slate-200 transition-colors">
+                                    0{index + 1}
+                                </span>
+                            </div>
 
-              {/* Icon Container */}
-              <div className="relative z-10 w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110 shadow-sm group-hover:shadow-blue-300/50">
-                <service.icon className="w-7 h-7" strokeWidth={1.5} />
-              </div>
+                            <h3 className={`text-2xl font-bold text-slate-900 mb-4 ${styles.hoverText} transition-colors`}>
+                                {service.title}
+                            </h3>
+                            <p className="text-slate-500 mb-8 leading-relaxed h-20">
+                                {service.description}
+                            </p>
 
-              {/* Content */}
-              <h3 className="relative z-10 text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
-                {service.title}
-              </h3>
-              <p className="relative z-10 text-slate-600 leading-relaxed mb-8 flex-grow">
-                {service.description}
-              </p>
+                            {/* Tech Specs */}
+                            <div className="space-y-3 mb-8">
+                                {service.features.map((feature, i) => (
+                                    <div key={i} className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                                        <CornerDownRight className={`w-4 h-4 ${styles.iconText}`} />
+                                        {feature}
+                                    </div>
+                                ))}
+                            </div>
 
-              {/* CTA Link */}
-              <div className="relative z-10 flex items-center text-slate-400 font-semibold text-sm mt-auto transition-all duration-300 group-hover:text-blue-600">
-                <span className="mr-2">Explore System</span>
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-          ))}
+                            {/* CTA */}
+                            <a 
+                                href={`https://wa.me/919824653242?text=${encodeURIComponent(service.whatsappMessage)}`}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className={`inline-flex items-center gap-2 text-sm font-bold ${styles.text} uppercase tracking-wider group/btn`}
+                            >
+                                Inquire Now
+                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                            </a>
+                        </div>
+                    </div>
+                )
+            })}
         </div>
 
       </div>

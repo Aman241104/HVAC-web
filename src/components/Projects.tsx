@@ -110,7 +110,7 @@ export default function Projects() {
             </p>
           </div>
           <a 
-            href="https://wa.me/916353070793?text=Hi, I would like to see more of your HVAC projects."
+            href="https://wa.me/919824653242?text=Hello%20VAER%20Team%2C%20I%20am%20interested%20in%20your%20premium%20HVAC%20engineering%20services.%20Can%20we%20schedule%20a%20site%20inspection%3F"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-2 px-6 py-3 bg-transparent border border-blue-600 hover:bg-blue-600 text-blue-600 hover:text-white rounded-full transition-all duration-300 font-medium cursor-pointer"

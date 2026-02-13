@@ -86,8 +86,8 @@ export default function Navbar() {
             
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="text-blue-600 transition-transform duration-1000 ease-in-out group-hover:rotate-[360deg]">
-                <Fan className="w-8 h-8" strokeWidth={2.5} />
+              <div className="relative w-10 h-10 transition-transform duration-500 hover:scale-105">
+                 <img src="/company_logo.png" alt="VAER HVAC Logo" className="w-full h-full object-contain" />
               </div>
               <div className="flex items-center gap-2 select-none">
                 <span className="text-2xl font-extrabold text-slate-900 tracking-tight">
