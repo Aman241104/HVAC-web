@@ -137,7 +137,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative pt-24 pb-12 px-6 bg-slate-50 min-h-[90vh] flex flex-col justify-center overflow-hidden"
+      className="relative pt-24 pb-12 px-4 sm:px-6 bg-slate-50 min-h-[90vh] flex flex-col justify-center overflow-hidden"
     >
       {/* Background decoration: Engineering Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-40"
@@ -159,7 +159,7 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <h1 ref={headlineRef} className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 mb-8 leading-[0.95] tracking-tight max-w-5xl relative z-20">
+        <h1 ref={headlineRef} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight max-w-5xl relative z-20">
           Engineering Perfect <br />
           <span className="bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-sm">
             Indoor Comfort.

@@ -80,7 +80,7 @@ export default function About() {
   }, { scope: containerRef })
 
   return (
-    <section id="about" ref={containerRef} className="py-24 bg-white relative overflow-hidden">
+    <section id="about" ref={containerRef} className="py-16 md:py-24 bg-white relative overflow-hidden">
 
       {/* Background: Technical Drawing Watermark */}
       <div className="absolute -left-20 top-20 w-[600px] h-[600px] opacity-[0.03] pointer-events-none rotate-12">
@@ -136,9 +136,9 @@ export default function About() {
                 <div
                   key={index}
                   ref={el => { statsRef.current[index] = el }}
-                  className="bg-white p-8 flex flex-col items-center justify-center text-center aspect-square md:aspect-auto md:h-52 hover:bg-slate-50 transition-colors duration-300 group"
+                  className="bg-white p-4 sm:p-8 flex flex-col items-center justify-center text-center aspect-square md:aspect-auto md:h-52 hover:bg-slate-50 transition-colors duration-300 group"
                 >
-                  <div className="text-4xl md:text-5xl font-mono font-bold text-slate-900 mb-3 flex items-baseline tracking-tighter group-hover:text-blue-600 transition-colors">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-mono font-bold text-slate-900 mb-3 flex items-baseline tracking-tighter group-hover:text-blue-600 transition-colors">
                     <span className="stat-value">0</span>
                     <span className="text-2xl md:text-3xl ml-1 text-slate-400">{stat.suffix}</span>
                   </div>
