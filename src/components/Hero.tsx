@@ -238,13 +238,15 @@ export default function Hero() {
             Explore Services
             <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform text-slate-400 group-hover:text-slate-600" />
           </Link>
-          <Link
-            href="#contact"
+          <a
+            href="https://wa.me/919824653242?text=I'm%20interested%20in%20successfully%20scheduling%20a%20Free%20Site%20Inspection%20for%20my%20HVAC%20requirements."
+            target="_blank"
+            rel="noopener noreferrer"
             className="group px-8 py-3.5 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 flex items-center justify-center gap-2"
           >
             Get Free Site Inspection
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </a>
         </div>
 
         {/* Trust Features (Feature Cards) */}
