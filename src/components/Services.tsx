@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Fan, ThermometerSnowflake, Wrench, Wind, ArrowRight, CornerDownRight } from 'lucide-react'
+import { Fan, ThermometerSnowflake, Wrench, RefreshCw, ArrowRight, CornerDownRight } from 'lucide-react'
 
 // Register plugins
 gsap.registerPlugin(ScrollTrigger)
@@ -67,12 +67,12 @@ const services = [
     whatsappMessage: "EMERGENCY: I need a technician for an urgent HVAC repair."
   },
   {
-    title: 'Indoor Air Quality',
-    description: 'Advanced filtration and ventilation solutions to keep your indoor air fresh, clean, and healthy.',
-    icon: Wind,
-    features: ['HEPA Filtration', 'Fresh Air Units (TFA)', 'Humidity Control'],
+    title: 'Retrofit & Upgrade',
+    description: 'Modernize your aging HVAC infrastructure for superior energy efficiency and performance without full replacement.',
+    icon: RefreshCw,
+    features: ['System Audits', 'Energy Efficiency Retrofits', 'Component Upgrades'],
     color: 'cyan' as keyof typeof colorStyles,
-    whatsappMessage: "I want to improve the air quality in my office/home. Tell me more about your IAQ solutions."
+    whatsappMessage: "I want to upgrade or retrofit my existing HVAC system. Please evaluate my site."
   }
 ]
 
