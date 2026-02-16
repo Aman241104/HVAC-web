@@ -6,10 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { Fan, ThermometerSnowflake, Wrench, Wind, ArrowRight, CornerDownRight } from 'lucide-react'
 
-// Register plugins to fix animation issues
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+// Register plugins
+gsap.registerPlugin(ScrollTrigger)
 
 // Define Color Map to prevent Tailwind purging
 const colorStyles = {
@@ -78,103 +76,103 @@ const services = [
   }
 ]
 
+
 export default function Services() {
   const containerRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    // Force clear any stuck animations
-    gsap.set('.section-header, .service-card', { clearProps: 'all' })
+    // Set initial hidden state via GSAP (not Tailwind) so GSAP controls visibility
+    gsap.set('.section-header', { autoAlpha: 0, y: 30 })
+    gsap.set('.service-card', { autoAlpha: 0, y: 50 })
 
     const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse'
-        }
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
     })
 
-    tl.fromTo('.section-header', 
-        { y: 30, opacity: 0, autoAlpha: 0 },
-        { y: 0, opacity: 1, autoAlpha: 1, duration: 0.8, ease: 'power2.out' }
+    tl.to('.section-header',
+      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power2.out' }
     )
-    .fromTo('.service-card', 
-        { y: 50, opacity: 0, autoAlpha: 0 },
-        { y: 0, opacity: 1, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' },
+      .to('.service-card',
+        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' },
         '-=0.4'
-    )
+      )
 
   }, { scope: containerRef })
 
   return (
     <section id="services" ref={containerRef} className="py-24 bg-white relative">
       <div className="container mx-auto px-6 relative z-10">
-        
-        <div className="section-header text-center mb-20 opacity-0 invisible"> {/* Initial state controlled by GSAP */}
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
-                Our Expertise
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                Engineered for <span className="text-blue-600">Performance.</span>
-            </h2>
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-                We don't just install ACs; we engineer climate control ecosystems tailored to your architectural vision.
-            </p>
+
+        <div className="section-header text-center mb-20">
+          <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
+            Our Expertise
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            Engineered for <span className="text-blue-600">Performance.</span>
+          </h2>
+          <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+            We don't just install ACs; we engineer climate control ecosystems tailored to your architectural vision.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {services.map((service, index) => {
-                const styles = colorStyles[service.color]
-                
-                return (
-                    <div 
-                        key={index} 
-                        className="service-card group relative bg-white border border-slate-100 rounded-3xl p-8 hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500 hover:-translate-y-1 overflow-hidden opacity-0 invisible"
-                    >
-                        {/* Hover Gradient Background */}
-                        <div className={`absolute inset-0 bg-gradient-to-br from-white ${styles.gradientTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                        
-                        <div className="relative z-10">
-                            {/* Icon & Index */}
-                            <div className="flex justify-between items-start mb-8">
-                                <div className={`w-14 h-14 rounded-2xl ${styles.bg} flex items-center justify-center ${styles.iconText} group-hover:scale-110 transition-transform duration-500`}>
-                                    <service.icon className="w-7 h-7" />
-                                </div>
-                                <span className="text-4xl font-black text-slate-100 group-hover:text-slate-200 transition-colors">
-                                    0{index + 1}
-                                </span>
-                            </div>
+          {services.map((service, index) => {
+            const styles = colorStyles[service.color]
 
-                            <h3 className={`text-2xl font-bold text-slate-900 mb-4 ${styles.hoverText} transition-colors`}>
-                                {service.title}
-                            </h3>
-                            <p className="text-slate-500 mb-8 leading-relaxed h-20">
-                                {service.description}
-                            </p>
+            return (
+              <div
+                key={index}
+                className="service-card group relative bg-white border border-slate-100 rounded-3xl p-8 hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500 hover:-translate-y-1 overflow-hidden"
+              >
+                {/* Hover Gradient Background */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-white ${styles.gradientTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
 
-                            {/* Tech Specs */}
-                            <div className="space-y-3 mb-8">
-                                {service.features.map((feature, i) => (
-                                    <div key={i} className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                                        <CornerDownRight className={`w-4 h-4 ${styles.iconText}`} />
-                                        {feature}
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* CTA */}
-                            <a 
-                                href={`https://wa.me/919824653242?text=${encodeURIComponent(service.whatsappMessage)}`}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className={`inline-flex items-center gap-2 text-sm font-bold ${styles.text} uppercase tracking-wider group/btn`}
-                            >
-                                Inquire Now
-                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                            </a>
-                        </div>
+                <div className="relative z-10">
+                  {/* Icon & Index */}
+                  <div className="flex justify-between items-start mb-8">
+                    <div className={`w-14 h-14 rounded-2xl ${styles.bg} flex items-center justify-center ${styles.iconText} group-hover:scale-110 transition-transform duration-500`}>
+                      <service.icon className="w-7 h-7" />
                     </div>
-                )
-            })}
+                    <span className="text-4xl font-black text-slate-100 group-hover:text-slate-200 transition-colors">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <h3 className={`text-2xl font-bold text-slate-900 mb-4 ${styles.hoverText} transition-colors`}>
+                    {service.title}
+                  </h3>
+                  <p className="text-slate-500 mb-8 leading-relaxed h-20">
+                    {service.description}
+                  </p>
+
+                  {/* Tech Specs */}
+                  <div className="space-y-3 mb-8">
+                    {service.features.map((feature, i) => (
+                      <div key={i} className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <CornerDownRight className={`w-4 h-4 ${styles.iconText}`} />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <a
+                    href={`https://wa.me/919824653242?text=${encodeURIComponent(service.whatsappMessage)}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={`inline-flex items-center gap-2 text-sm font-bold ${styles.text} uppercase tracking-wider group/btn`}
+                  >
+                    Inquire Now
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+            )
+          })}
         </div>
 
       </div>

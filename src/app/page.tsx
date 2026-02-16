@@ -5,7 +5,7 @@ import Services from '@/components/Services'
 import Projects from '@/components/Projects'
 import Testimonials from '@/components/Testimonials'
 import Contact from '@/components/Contact'
-import WhatsAppFloat from '@/components/WhatsAppFloat'
+
 import Preloader from '@/components/Preloader'
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       <Projects />
       <Testimonials />
       <Contact />
-      <WhatsAppFloat />
+
     </main>
   )
 }
