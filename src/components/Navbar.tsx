@@ -87,7 +87,11 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-2 group">
               {/* Logo Container - Made much bigger as requested */}
               <div className="relative w-24 h-10 md:w-40 md:h-16 transition-transform duration-500 hover:scale-105">
-                <img src="/company_logo.png" alt="VAER HVAC Logo" className="w-full h-full object-contain text-left" />
+                <img 
+                  src="/company_logo.png" 
+                  alt="VAER HVAC Logo" 
+                  className={`w-full h-full object-contain text-left transition-all duration-300 ${!isScrolled ? 'brightness-0 invert opacity-90' : 'brightness-100'}`} 
+                />
               </div>
             </Link>
 
@@ -101,14 +105,16 @@ export default function Navbar() {
                     href={link.href}
                     onClick={(e) => scrollToSection(e, link.href)}
                     className={`relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
-                      ? 'text-blue-700 bg-blue-50 font-bold'
-                      : 'text-slate-700 hover:text-blue-600 hover:bg-white/50'
+                      ? 'text-blue-600 bg-blue-50 font-bold'
+                      : isScrolled 
+                        ? 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' 
+                        : 'text-white/90 hover:text-white hover:bg-white/10'
                       }`}
                   >
                     {link.name}
                     {/* Active Dot - Floating below text */}
                     {isActive && (
-                      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-600" />
+                      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600" />
                     )}
                   </a>
                 )
@@ -121,16 +127,22 @@ export default function Navbar() {
                 href="https://wa.me/919824653242"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex w-10 h-10 items-center justify-center rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors border border-green-100"
+                className={`hidden md:flex w-10 h-10 items-center justify-center rounded-full transition-colors border ${isScrolled 
+                  ? 'bg-green-50 text-green-600 hover:bg-green-100 border-green-100' 
+                  : 'bg-white/10 text-white hover:bg-white/20 border-white/20 backdrop-blur-md'
+                }`}
                 aria-label="Chat on WhatsApp"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-5 h-5" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className={`w-5 h-5 ${!isScrolled && 'brightness-0 invert'}`} />
               </a>
 
               <a
                 href="#contact"
                 onClick={(e) => scrollToSection(e, '#contact')}
-                className="hidden md:flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+                className={`hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isScrolled
+                  ? 'bg-slate-900 hover:bg-blue-600 text-white shadow-slate-200'
+                  : 'bg-white text-slate-900 hover:bg-blue-50 shadow-white/10'
+                }`}
               >
                 <Phone className="w-4 h-4" />
                 Book Visit
@@ -138,7 +150,10 @@ export default function Navbar() {
 
               {/* Mobile Menu Button */}
               <button
-                className="md:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+                className={`md:hidden p-2 rounded-full transition-colors ${isScrolled
+                  ? 'text-slate-700 hover:bg-slate-100'
+                  : 'text-white hover:bg-white/10'
+                }`}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle menu"
               >
