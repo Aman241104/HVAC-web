@@ -77,8 +77,9 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200/50 py-3'
-          : 'bg-transparent border-transparent py-6'
+          : 'bg-transparent border-transparent py-4 md:py-6'
           }`}
+
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -123,19 +124,6 @@ export default function Navbar() {
 
             {/* Right Side: CTA & Mobile Menu Toggle */}
             <div className="flex items-center gap-3">
-              <a
-                href="https://wa.me/919824653242"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`hidden md:flex w-10 h-10 items-center justify-center rounded-full transition-colors border ${isScrolled 
-                  ? 'bg-green-50 text-green-600 hover:bg-green-100 border-green-100' 
-                  : 'bg-white/10 text-white hover:bg-white/20 border-white/20 backdrop-blur-md'
-                }`}
-                aria-label="Chat on WhatsApp"
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className={`w-5 h-5 ${!isScrolled && 'brightness-0 invert'}`} />
-              </a>
-
               <a
                 href="#contact"
                 onClick={(e) => scrollToSection(e, '#contact')}

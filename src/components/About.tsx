@@ -1,10 +1,10 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Zap, Activity, Cpu, CircuitBoard } from 'lucide-react'
+import { Zap, HardHat, Headphones, ChevronRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,9 +15,34 @@ const stats = [
   { label: "Emergency Support", value: 24, suffix: "/7" },
 ]
 
+const features = [
+  { 
+    title: "Trendsetters since 1990!", 
+    subtitle: "Pioneering the industry with innovation and excellence for over three decades.",
+    icon: Zap,
+    color: "text-blue-600",
+    bgColor: "bg-blue-50"
+  },
+  { 
+    title: "Skilled & Trained Workforce", 
+    subtitle: "Our team of experts, equipped with extensive training and skills, ensures top-notch service every time.",
+    icon: HardHat,
+    color: "text-red-600",
+    bgColor: "bg-red-50"
+  },
+  { 
+    title: "24/7 Dedicated Support", 
+    subtitle: "We're here for you round the clock, providing unwavering support whenever you need us.",
+    icon: Headphones,
+    color: "text-cyan-600",
+    bgColor: "bg-cyan-50"
+  }
+]
+
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<(HTMLDivElement | null)[]>([])
+  const [activeFeature, setActiveFeature] = useState<number | null>(null)
 
   useGSAP(() => {
     // Animate Text and Checklist coming in from Left
@@ -45,7 +70,7 @@ export default function About() {
       }
     })
 
-    // Counter Animation for Numbers — single trigger, robust approach
+    // Counter Animation for Numbers
     const cards = statsRef.current.filter(Boolean)
 
     ScrollTrigger.create({
@@ -69,7 +94,6 @@ export default function About() {
               valueDisplay.textContent = Math.round(obj.val).toString()
             },
             onComplete: () => {
-              // Ensure final value is exact
               valueDisplay.textContent = target.toString()
             }
           })
@@ -104,29 +128,52 @@ export default function About() {
             </div>
 
             <h2 className="about-text text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-              We Don&apos;t Just Install. <br />
+              Your Precision Cooling <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-500">
-                We Engineer Comfort.
+                Partner Since 1990.
               </span>
             </h2>
             <p className="about-text text-lg text-slate-600 mb-8 leading-relaxed">
-              Most contractors just hang a unit on the wall. We bridge the gap between architectural vision and technical performance. Using precision heat-load calculations and advanced duct design, we ensure your system is efficient, invisible, and silent.
+              At VAER, we don&apos;t just install units; we engineer climate control ecosystems. Since our inception, we have set the benchmark for excellence in the HVAC industry, bridging the gap between complex architectural visions and high-performance technical execution. Each project is a testament to our attention to detail, innovative design, and seamless execution.
             </p>
 
-            <ul className="space-y-3 mb-8">
-              {[
-                { text: "Precision Heat Load Calculation", icon: Activity },
-                { text: "Seamless Interior Integration", icon: CircuitBoard },
-                { text: "Energy-Optimized VRF Systems", icon: Zap }
-              ].map((item, i) => (
-                <li key={i} className="about-text flex items-center bg-slate-50 border border-slate-100 rounded-xl p-3 text-slate-700 font-medium hover:border-blue-200 transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-blue-600 mr-4 shadow-sm">
-                    <item.icon className="w-4 h-4" />
+            <div className="about-text space-y-4 mb-8">
+              {features.map((feature, i) => (
+                <div 
+                  key={i} 
+                  className={`group cursor-pointer bg-white border rounded-2xl transition-all duration-300 ${
+                    activeFeature === i 
+                      ? 'border-blue-400 shadow-lg shadow-blue-50 scale-[1.02]' 
+                      : 'border-slate-100 hover:border-slate-300'
+                  }`}
+                  onClick={() => setActiveFeature(activeFeature === i ? null : i)}
+                >
+                  <div className="p-4 flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className={`w-12 h-12 rounded-xl ${feature.bgColor} ${feature.color} flex items-center justify-center mr-4 shadow-sm group-hover:scale-110 transition-transform`}>
+                        <feature.icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-800 tracking-tight">
+                        {feature.title}
+                      </h3>
+                    </div>
+                    <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${activeFeature === i ? 'rotate-90 text-blue-500' : ''}`} />
                   </div>
-                  {item.text}
-                </li>
+                  
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      activeFeature === i ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="px-4 pb-4 pt-0 pl-20">
+                      <p className="text-slate-500 text-sm leading-relaxed border-l-2 border-blue-100 pl-4">
+                        {feature.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
           {/* Right Side: Control Panel Stats Grid */}

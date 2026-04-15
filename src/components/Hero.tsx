@@ -126,7 +126,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-slate-950"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-slate-950"
     >
       {/* Full Screen Background Carousel */}
       <div className="absolute inset-0 z-0">
@@ -147,86 +147,99 @@ export default function Hero() {
           </div>
         ))}
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-slate-950/60 z-[2]" />
+        <div className="absolute inset-0 bg-slate-950/70 z-[2]" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950 z-[2]" />
+        
+        {/* Technical Blueprint Grid Mask */}
+        <div className="absolute inset-0 z-[3] opacity-[0.15] pointer-events-none" 
+             style={{ 
+                 backgroundImage: 'linear-gradient(to right, #3b82f6 1px, transparent 1px), linear-gradient(to bottom, #3b82f6 1px, transparent 1px)', 
+                 backgroundSize: '60px 60px',
+                 maskImage: 'radial-gradient(circle at center, black 40%, transparent 100%)',
+                 WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 100%)'
+             }}>
+        </div>
       </div>
 
-      <div className="container mx-auto relative z-10 px-4 sm:px-6 flex flex-col items-center text-center pt-20">
+      <div className="container mx-auto relative z-10 px-4 sm:px-6 flex flex-col items-center text-center py-20">
 
-        {/* Eyebrow */}
-        <div ref={eyebrowRef} className="mb-6">
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-bold tracking-wide shadow-2xl">
+        {/* Eyebrow / Badge above text */}
+        <div ref={eyebrowRef} className="mb-6 md:mb-10">
+          <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-bold tracking-wide shadow-2xl hover:bg-white/20 transition-all cursor-default">
             <span className="animate-pulse">❄️</span> #1 Rated HVAC Engineering
           </span>
         </div>
 
-        {/* Headline */}
-        <h1 ref={headlineRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tight max-w-5xl">
-          Engineering Perfect <br />
-          <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-300 bg-clip-text text-transparent filter drop-shadow-[0_0_20px_rgba(56,189,248,0.3)]">
-            Indoor Comfort.
+        {/* Headline - Centered */}
+        <h1 ref={headlineRef} className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white mb-8 leading-[1.05] tracking-tight max-w-6xl mx-auto drop-shadow-2xl">
+          Precision HVAC <br />
+          <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-300 bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
+            & Cooling Engineering.
           </span>
         </h1>
 
-        {/* Carousel Slide Title/Desc Overlay (Subtle) */}
-        <div className="mb-10 h-12 relative w-full">
+        {/* Carousel Slide Title/Desc Overlay (Subtle) - Properly positioned below title */}
+        <div className="mb-12 md:mb-16 min-h-[5rem] relative w-full flex justify-center">
           {carouselSlides.map((slide, idx) => (
-            <p 
+            <div 
               key={slide.id}
-              className={`text-lg md:text-xl text-slate-300 font-medium transition-all duration-1000 absolute left-1/2 -translate-x-1/2 w-full ${
-                idx === activeIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              className={`transition-all duration-1000 absolute w-full flex flex-col items-center ${
+                idx === activeIndex ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
               }`}
             >
-              {slide.desc}
-            </p>
-          ))}
-        </div>
-
-        {/* CTAs */}
-        <div ref={ctaRef} className="flex flex-col sm:flex-row gap-5 mb-20 w-full sm:w-auto">
-          <a
-            href="https://wa.me/919824653242"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group px-10 py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 transition-all shadow-[0_0_25px_rgba(37,99,235,0.4)] hover:shadow-[0_0_35px_rgba(37,99,235,0.6)] hover:-translate-y-1 flex items-center justify-center gap-3 text-lg"
-          >
-            Get Free Site Inspection
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
-          <Link
-            href="#services"
-            className="group px-10 py-4 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-3 text-lg"
-          >
-            Explore Services
-            <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform text-blue-400" />
-          </Link>
-        </div>
-
-        {/* Trust Features */}
-        <div ref={featuresRef} className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
-          {[
-            { icon: HardHat, title: "Expert Engineers", desc: "Qualified professionals, not just mechanics.", color: "text-blue-400" },
-            { icon: Leaf, title: "Energy Efficient", desc: "Right-sized systems for lower bills.", color: "text-emerald-400" },
-            { icon: ShieldCheck, title: "Reliable Support", desc: "Comprehensive after-sales care.", color: "text-indigo-400" }
-          ].map((f, i) => (
-            <div key={i} className="trust-feature group bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-3xl flex flex-col items-center text-center transition-all duration-500 hover:bg-white/10 hover:-translate-y-2 cursor-default">
-              <div className={`w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-4 ${f.color} group-hover:scale-110 transition-transform duration-500`}>
-                <f.icon className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">{f.title}</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+              <p className="text-xl md:text-2xl text-blue-400 font-black uppercase tracking-[0.3em] mb-2 drop-shadow-lg">
+                {slide.title}
+              </p>
+              <p className="text-lg md:text-xl text-slate-200 font-semibold max-w-lg mx-auto leading-relaxed">
+                {slide.desc}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Carousel Dots */}
-        <div className="mt-12 flex gap-3">
+        {/* CTAs - Centered */}
+        <div ref={ctaRef} className="flex flex-col sm:flex-row gap-5 mb-16 w-full sm:w-auto justify-center items-center">
+          <a
+            href="https://wa.me/919824653242"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group px-10 py-4 md:px-12 md:py-5 rounded-full bg-blue-600 text-white font-black hover:bg-blue-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_rgba(37,99,235,0.7)] hover:-translate-y-1.5 flex items-center justify-center gap-4 text-lg md:text-xl w-full sm:w-auto"
+          >
+            Get Free Site Inspection
+            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+          </a>
+          <Link
+            href="#services"
+            className="group px-10 py-4 md:px-12 md:py-5 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl text-white font-black hover:bg-white/10 transition-all flex items-center justify-center gap-4 text-lg md:text-xl w-full sm:w-auto hover:-translate-y-1.5"
+          >
+            Explore Services
+            <ArrowDown className="w-6 h-6 group-hover:translate-y-2 transition-transform text-blue-400" />
+          </Link>
+        </div>
+
+        {/* Quick Stats Bar (Floating at bottom) - Shifted slightly up */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-20 border-t border-white/10 pt-16 w-full max-w-6xl mx-auto relative -top-8">
+            {[
+                { label: "Projects Completed", value: "500+" },
+                { label: "Cooling Capacity", value: "10K+ TR" },
+                { label: "Expert Engineers", value: "25+" },
+                { label: "Years Excellence", value: "30+" }
+            ].map((stat, i) => (
+                <div key={i} className="flex flex-col items-center group cursor-default">
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 tracking-tighter group-hover:text-blue-400 transition-colors duration-300">{stat.value}</span>
+                    <span className="text-[10px] md:text-xs font-black text-blue-500 uppercase tracking-[0.2em] group-hover:text-white transition-colors duration-300">{stat.label}</span>
+                </div>
+            ))}
+        </div>
+
+        {/* Carousel Dots - Positioned for better visibility */}
+        <div className="mt-12 flex gap-6">
           {carouselSlides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                idx === activeIndex ? 'w-10 bg-blue-500' : 'w-4 bg-white/20 hover:bg-white/40'
+              className={`h-2.5 rounded-full transition-all duration-700 ${
+                idx === activeIndex ? 'w-16 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]' : 'w-5 bg-white/20 hover:bg-white/40'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

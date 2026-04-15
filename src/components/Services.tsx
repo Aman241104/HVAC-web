@@ -82,23 +82,24 @@ export default function Services() {
 
   useGSAP(() => {
     // Set initial hidden state via GSAP (not Tailwind) so GSAP controls visibility
-    gsap.set('.section-header', { autoAlpha: 0, y: 30 })
-    gsap.set('.service-card', { autoAlpha: 0, y: 50 })
+    gsap.set('.section-header', { autoAlpha: 0, y: 20 })
+    gsap.set('.service-card', { autoAlpha: 0, y: 30 })
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 95%',
-        toggleActions: 'play none none reverse'
+        start: 'top 85%', // Trigger earlier
+        once: true, // Only play once for performance
+        toggleActions: 'play none none none'
       }
     })
 
     tl.to('.section-header',
-      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power2.out' }
+      { y: 0, autoAlpha: 1, duration: 0.6, ease: 'power2.out' }
     )
       .to('.service-card',
-        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' },
-        '-=0.4'
+        { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' },
+        '-=0.3'
       )
 
   }, { scope: containerRef })

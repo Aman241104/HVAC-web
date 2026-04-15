@@ -9,6 +9,7 @@ export default function Preloader() {
   const counterRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
   const [displayedText, setDisplayedText] = useState("Initializing Core Systems...")
+  const [isVisible, setIsVisible] = useState(true)
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -16,14 +17,11 @@ export default function Preloader() {
              // Fade out and zoom to exit
              gsap.to(containerRef.current, {
                  opacity: 0,
-                 scale: 1.1,
-                 duration: 0.8,
+                 scale: 1.05,
+                 duration: 0.6,
                  ease: "power2.inOut",
                  onComplete: () => {
-                     // Standard cleanup if needed, though component might unmount or stay hidden
-                     if (containerRef.current) {
-                        containerRef.current.style.display = 'none';
-                     }
+                     setIsVisible(false)
                  }
              })
         }
@@ -54,6 +52,8 @@ export default function Preloader() {
     }, 1.0)
 
   }, { scope: containerRef })
+
+  if (!isVisible) return null
 
   return (
     <div 
